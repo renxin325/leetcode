@@ -14,53 +14,48 @@ public:
     ListNode* addTwoNumbers(ListNode *l1, ListNode *l2){
         if(!l1 || !l2)
             return nullptr;
-        ListNode *result = l1, *pre_ptr = nullptr;
+        ListNode *head = nullptr, *pre_ptr = nullptr;
         int carry = 0;
-        while(l1 && l2){
-            int total_sum = l1->val + l2->val + carry;
+        while(l1 || l2){
+            // 注意双目运算符得使用
+            int l1_val = l1? l1->val:0;
+            int l2_val = l2? l2->val:0;
+            int total_sum = l1_val + l2_val + carry;
             carry = total_sum / 10;
-            int sum =total_sum - carry * 10;
-            l1->val = sum;
-            pre_ptr = l1;
-            l1 = l1->next;
-            l2 = l2->next;
-        }
-        while(l1){
-            int total_sum = l1->val + carry;
-            carry = total_sum / 10;
-            int sum =total_sum - carry * 10;
-            l1->val = sum;
-            pre_ptr = l1;
-            l1 = l1->next;
-        }
-        while(l2){
-            int total_sum = l2->val + carry;
-            carry = total_sum / 10;
-            int sum =total_sum - carry * 10;
-            ListNode *tmp = new ListNode(sum);
-            pre_ptr->next = tmp;
-            pre_ptr = pre_ptr->next;
+            int sum = total_sum - carry * 10;
+            if(!head)
+                //注意重新生成新的链表
+                head = pre_ptr = new ListNode(sum);
+            else {
+                ListNode *node = new ListNode(sum);
+                pre_ptr->next = node;
+                pre_ptr = pre_ptr->next;
+            }
+            if(l1)
+                l1 = l1->next;
+            if(l2)
+                l2 = l2->next;
         }
         if(carry){
             ListNode *tmp = new ListNode(1);
             pre_ptr->next = tmp;
             pre_ptr = pre_ptr->next;
         }
-        return result;
+        return head;
     }
 };
 
 int main()
 {
     // 0 1 2 3 4 5 6 7 8 9
-    ListNode *head1 = new ListNode(9);
-    for(int i = 8; i >= 0 ;i--){
+    ListNode *head1 = new ListNode(3);
+    for(int i = 2; i >= 0 ;i--){
         ListNode *tmp = new ListNode(i,head1);
         head1 = tmp;
     }
     // 0 1 2 3
-    ListNode *head2 = new ListNode(9);
-    for(int i = 8; i >= 0 ;i--){
+    ListNode *head2 = new ListNode(3);
+    for(int i = 2; i >= 0 ;i--){
         ListNode *tmp = new ListNode(i,head2);
         head2 = tmp;
     }
