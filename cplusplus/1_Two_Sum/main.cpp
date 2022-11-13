@@ -9,7 +9,7 @@ class Solution {
 public:
     vector<int> result(vector<int>& nums,int target){
         vector<int> result;
-        map<int, int> nums_map;
+        unordered_map<int, int> nums_map;
         for(int i = 0; i<nums.size(); i++){
             nums_map[nums[i]] = i;
         }
